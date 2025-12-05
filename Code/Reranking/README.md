@@ -105,3 +105,59 @@ For **LLM**-based reranking, the zero-shot and one-shot prompts are defined in [
 The implementation details of [RankLLM](https://github.com/castorini/rank_llm) refer to [./LLM/rankllm.py](./LLM/rankllm.py) and [./LLM/rank_DSE_template.yaml](./rank_DSE_template.yaml).
 
 The iterative grouping method used for reranking is based on the work of [Zhang et al.](https://doi.org/10.1145/3626772.3657966). For implementation details, refer to [./LLM/iterative_group_rerank.py](./LLM/iterative_group_rerank.py).
+
+## GNN (HINormer & HHGT)
+
+The `GNN` directory is organised as follows:
+
+- data/: the original data of the graph. Please download the data from [Zenodo](https://zenodo.org/records/17828423) and extract it into the directory.
+- result/: contains results of baselines.
+- code/
+    - run.py: reranking by HINormer.
+    - run_hhgt.py: reranking by HHGT.
+    - model.py: implementation of HINormer(ref: https://github.com/Ffffffffire/HINormer).
+    - hhgt_model.py: implementation of HINormer(ref: https://github.com/qiuyu111/HHGT).
+    - mag_settings_cla.yaml: hyper parameters setting of HHGT
+    - utils/: contains tool functions.
+
+### Requirements
+
+- Python==3.9.0
+- Pytorch==1.12.0
+- Networkx==2.8.4
+- numpy==1.22.3
+- dgl==0.9.0
+- scikit-learn==1.1.1
+- scipy==1.7.3
+
+### Running experiments
+
+We train our model using NVIDIA GeForce RTX 4090 GPU with CUDA 12.2.
+
+For evaluation of HINormer with the annotator split:
+```
+bash HINormer_union.sh
+```
+
+For evaluation of HINormer with the five-fold split:
+```
+bash HINormer_fold.sh
+```
+
+For evaluation of HHGT with the annotator split:
+```
+bash HHGT_union.sh
+```
+
+For evaluation of HHGT with the five-fold split:
+```
+bash HHGT_fold.sh
+```
+
+Converting GNN results into results that can be evaluated:
+```bash
+python Code/Reranking/GNN/GNN_to_origin.py \
+  --mapping Code/Reranking/GNN/GNN_to_origin.json \
+  --run path/to/GNN_output.json \
+  --result path/to/your_result.json
+```
