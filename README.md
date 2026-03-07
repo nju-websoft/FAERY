@@ -117,7 +117,7 @@ python Code/Evaluation/evaluate_explanation.py \
 
 ## Source Codes
 
-All implementation source code is available in the `./Code` directory.
+All implementation source code is available in the `./Code` directory. For detailed implementation specifics and hyperparameter settings, please refer to `implementation_details.md`.
 
 ### Dependencies
 
